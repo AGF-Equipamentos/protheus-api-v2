@@ -9,7 +9,7 @@ export const knex = setupKnex({
     server: process.env.PROTHEUS_SERVER,
     database: process.env.PROTHEUS_DATABASE,
     options: {
-      instanceName: process.env.PROTHEUS_INSTANCE_NAME,
-    },
-  },
+      instanceName: process.env.PROTHEUS_INSTANCE_NAME
+    }
+  }
 })

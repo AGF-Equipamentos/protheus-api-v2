@@ -18,7 +18,7 @@
     "typescript": "^5.0.4"
   },
   "devDependencies": {
-    "@arthurpedroti/eslint-config": "^1.0.5",
+    "@arthurpedroti/eslint-config": "^1.0.7",
     "@types/node": "^18.15.11",
     "@types/tedious": "^4.0.9",
     "eslint": "^8.38.0",
