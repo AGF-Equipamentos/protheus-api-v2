@@ -1,12 +1,13 @@
 import fastify from 'fastify'
-import { knex } from './database'
+import cors from '@fastify/cors'
+import { stocksRoutes } from './routes/stocks'
 
 const app = fastify()
 
-app.get('/hello', async () => {
-  const tables = await knex('SALDO_ESTOQUE').select('*')
+app.register(cors)
 
-  return tables
+app.register(stocksRoutes, {
+  prefix: 'estoques'
 })
 
 app
