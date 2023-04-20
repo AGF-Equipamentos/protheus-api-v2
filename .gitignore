@@ -1,2 +1,8 @@
+# Dependencies
 node_modules
+
+# Buildd
+build
+
+# Environment
 .env
