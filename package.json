@@ -16,6 +16,7 @@
     "dotenv": "^16.0.3",
     "fastify": "^4.15.0",
     "knex": "^2.4.2",
+    "qs": "^6.11.1",
     "tedious": "^16.0.0",
     "typescript": "^5.0.4",
     "zod": "^3.21.4"
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@arthurpedroti/eslint-config": "^1.0.7",
     "@types/node": "^18.15.11",
+    "@types/qs": "^6.9.7",
     "@types/tedious": "^4.0.9",
     "eslint": "^8.38.0",
     "tsup": "^6.7.0",

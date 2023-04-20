@@ -1,32 +1,19 @@
 import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import { z } from 'zod'
-import { unifyObjectProperties } from '../utils/unifyObjectProperties'
 import { whereInGenerator } from '../utils/whereInGenerator'
 
 export async function stocksRoutes(app: FastifyInstance) {
-  app.get('/', async (request, reply) => {
-    const getStocksQueryParamsSchema = z
-      .object({
-        filial: z.string().or(z.string().array()).optional(),
-        'filial[]': z.string().or(z.string().array()).optional(),
-        produto: z.string().or(z.string().array()).optional(),
-        'produto[]': z.string().or(z.string().array()).optional(),
-        grupo: z.string().or(z.string().array()).optional(),
-        'grupo[]': z.string().or(z.string().array()).optional(),
-        armazem: z.string().or(z.string().array()).optional(),
-        'armazem[]': z.string().or(z.string().array()).optional()
-      })
-      .refine((values) => {
-        return unifyObjectProperties(values)
-      })
+  app.get('/', async (request) => {
+    const getStocksQueryParamsSchema = z.object({
+      filial: z.string().or(z.string().array()).optional(),
+      produto: z.string().or(z.string().array()).optional(),
+      grupo: z.string().or(z.string().array()).optional(),
+      armazem: z.string().or(z.string().array()).optional()
+    })
 
-    const {
-      'filial[]': filial,
-      'produto[]': produto,
-      'grupo[]': grupo,
-      'armazem[]': armazem
-    } = getStocksQueryParamsSchema.parse(request.query)
+    const { filial, produto, grupo, armazem } =
+      getStocksQueryParamsSchema.parse(request.query)
 
     const query = knex
       .select('FILIAL', 'PRODUTO', 'DESCRICAO', 'SALDO', 'ARMAZEM')
