@@ -2,15 +2,24 @@ import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import { z } from 'zod'
 import { modifyGenerator } from '../utils/modifyGenerator'
+import { unifyObjectProperties } from '../utils/unifyObjectProperties'
 
 export async function stocksRoutes(app: FastifyInstance) {
   app.get('/', async (request, reply) => {
-    const getStocksQueryParamsSchema = z.object({
-      'filial[]': z.string().or(z.string().array()).optional(),
-      'produto[]': z.string().or(z.string().array()).optional(),
-      'grupo[]': z.string().or(z.string().array()).optional(),
-      'armazem[]': z.string().or(z.string().array()).optional()
-    })
+    const getStocksQueryParamsSchema = z
+      .object({
+        filial: z.string().or(z.string().array()).optional(),
+        'filial[]': z.string().or(z.string().array()).optional(),
+        produto: z.string().or(z.string().array()).optional(),
+        'produto[]': z.string().or(z.string().array()).optional(),
+        grupo: z.string().or(z.string().array()).optional(),
+        'grupo[]': z.string().or(z.string().array()).optional(),
+        armazem: z.string().or(z.string().array()).optional(),
+        'armazem[]': z.string().or(z.string().array()).optional()
+      })
+      .refine((values) => {
+        return unifyObjectProperties(values)
+      })
 
     const {
       'filial[]': filial,
