@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import { knex } from '../database'
 import { z } from 'zod'
-import { modifyGenerator } from '../utils/modifyGenerator'
 import { unifyObjectProperties } from '../utils/unifyObjectProperties'
+import { whereInGenerator } from '../utils/whereInGenerator'
 
 export async function stocksRoutes(app: FastifyInstance) {
   app.get('/', async (request, reply) => {
@@ -42,7 +42,7 @@ export async function stocksRoutes(app: FastifyInstance) {
     }
 
     for (const [column, value] of Object.entries(modifyConditions)) {
-      query.modify(modifyGenerator, { column, value })
+      query.modify(whereInGenerator, { column, value })
     }
 
     const stocks = await query
