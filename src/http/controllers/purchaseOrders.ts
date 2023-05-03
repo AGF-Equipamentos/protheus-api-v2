@@ -54,47 +54,41 @@ export async function purchaseOrdersRoutes(request: FastifyRequest) {
     )
     .where('SC7.C7_RESIDUO', '=', '')
     .where('SC7.D_E_L_E_T_', '=', '')
-    .modify((query, desc) => {
-      if (desc) {
-        query.orderBy(
-          'SC7.C7_DATPRF DESC',
-          'SC7.C7_NUM DESC',
-          'SC7.C7_ITEM DESC'
-        )
-      } else {
-        query.orderBy('SC7.C7_DATPRF', 'SC7.C7_NUM', 'SC7.C7_ITEM')
+    .modify((query) => {
+      if (top) {
+        query.limit(top)
       }
-    }, desc)
 
-  if (top) {
-    query.limit(top)
-  }
-
-  if (legenda) {
-    query.modify((query, legenda) => {
-      if (Array.isArray(legenda)) {
-        query.whereRaw(`CASE WHEN C7_RESIDUO <> '' THEN 'RESÍDUO ELIMINADO' WHEN C7_QTDACLA > 0 AND C7_RESIDUO = '' THEN 'PEDIDO USADO EM PRÉ-NOTA' WHEN C7_QUJE = 0 AND C7_QTDACLA = 0 AND
-          C7_RESIDUO = '' THEN 'PENDENTE' WHEN C7_QUJE <> 0 AND C7_QUJE < C7_QUANT AND C7_RESIDUO = '' THEN 'ATENDIDO PARCIALMENTE' WHEN C7_QUJE >= C7_QUANT AND
-          C7_RESIDUO = '' THEN 'PEDIDO ATENDIDO' ELSE '' END IN ('${legenda.join(
-            `','`
-          )}')`)
-      } else {
-        query.whereRaw(
-          `CASE WHEN C7_RESIDUO <> '' THEN 'RESÍDUO ELIMINADO' WHEN C7_QTDACLA > 0 AND C7_RESIDUO = '' THEN 'PEDIDO USADO EM PRÉ-NOTA' WHEN C7_QUJE = 0 AND C7_QTDACLA = 0 AND
-            C7_RESIDUO = '' THEN 'PENDENTE' WHEN C7_QUJE <> 0 AND C7_QUJE < C7_QUANT AND C7_RESIDUO = '' THEN 'ATENDIDO PARCIALMENTE' WHEN C7_QUJE >= C7_QUANT AND
-            C7_RESIDUO = '' THEN 'PEDIDO ATENDIDO' ELSE '' END IN ('${legenda}')`
-        )
-      }
-    }, legenda)
-  }
-
-  if (entregue) {
-    query.modify((query, entregue) => {
       if (entregue) {
         query.where('C7_QUJE', '>', 0)
       }
-    }, entregue)
-  }
+
+      if (desc) {
+        query.orderBy([
+          { column: 'SC7.C7_DATPRF', order: 'desc' },
+          { column: 'SC7.C7_NUM', order: 'desc' },
+          { column: 'SC7.C7_ITEM', order: 'desc' }
+        ])
+      } else {
+        query.orderBy(['SC7.C7_DATPRF', 'SC7.C7_NUM', 'SC7.C7_ITEM'])
+      }
+
+      if (legenda) {
+        if (Array.isArray(legenda)) {
+          query.whereRaw(`CASE WHEN C7_RESIDUO <> '' THEN 'RESÍDUO ELIMINADO' WHEN C7_QTDACLA > 0 AND C7_RESIDUO = '' THEN 'PEDIDO USADO EM PRÉ-NOTA' WHEN C7_QUJE = 0 AND C7_QTDACLA = 0 AND
+              C7_RESIDUO = '' THEN 'PENDENTE' WHEN C7_QUJE <> 0 AND C7_QUJE < C7_QUANT AND C7_RESIDUO = '' THEN 'ATENDIDO PARCIALMENTE' WHEN C7_QUJE >= C7_QUANT AND
+              C7_RESIDUO = '' THEN 'PEDIDO ATENDIDO' ELSE '' END IN ('${legenda.join(
+                `','`
+              )}')`)
+        } else {
+          query.whereRaw(
+            `CASE WHEN C7_RESIDUO <> '' THEN 'RESÍDUO ELIMINADO' WHEN C7_QTDACLA > 0 AND C7_RESIDUO = '' THEN 'PEDIDO USADO EM PRÉ-NOTA' WHEN C7_QUJE = 0 AND C7_QTDACLA = 0 AND
+                C7_RESIDUO = '' THEN 'PENDENTE' WHEN C7_QUJE <> 0 AND C7_QUJE < C7_QUANT AND C7_RESIDUO = '' THEN 'ATENDIDO PARCIALMENTE' WHEN C7_QUJE >= C7_QUANT AND
+                C7_RESIDUO = '' THEN 'PEDIDO ATENDIDO' ELSE '' END IN ('${legenda}')`
+          )
+        }
+      }
+    })
 
   const modifyConditions = {
     'SC7.C7_FILIAL': filial,

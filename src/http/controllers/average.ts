@@ -3,12 +3,12 @@ import { z } from 'zod'
 import { knex } from '../../database/protheus'
 
 export async function averageRoutes(request: FastifyRequest) {
-  const getStocksQueryParamsSchema = z.object({
+  const getAverageQueryParamsSchema = z.object({
     filial: z.string().optional(),
     produto: z.string().optional()
   })
 
-  const { filial, produto } = getStocksQueryParamsSchema.parse(request.query)
+  const { filial, produto } = getAverageQueryParamsSchema.parse(request.query)
 
   const query = knex
     .select(
@@ -31,7 +31,7 @@ export async function averageRoutes(request: FastifyRequest) {
     .where('B3_COD', produto)
     .where('D_E_L_E_T_', '')
 
-  const stocks = await query
+  const average = await query
 
-  return stocks
+  return average
 }

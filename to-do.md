@@ -17,7 +17,7 @@
 - [ ] Purchase Orders Grouped
 - [x] Purchase Orders
 - [ ] Price
-- [ ] Register
+- [x] Register
 - [ ] Purchase Request Orders
 
 ## Other

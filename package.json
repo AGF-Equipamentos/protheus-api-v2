@@ -22,7 +22,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@arthurpedroti/eslint-config": "^1.0.7",
+    "@arthurpedroti/eslint-config": "^1.0.8",
     "@types/node": "^18.15.11",
     "@types/qs": "^6.9.7",
     "@types/tedious": "^4.0.9",
