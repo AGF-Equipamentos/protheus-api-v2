@@ -27,8 +27,14 @@ export async function averageRoutes(request: FastifyRequest) {
       'SB3.B3_Q12 AS Q12'
     )
     .from(knex.raw('SB3010 AS SB3 WITH (NOLOCK)'))
-    .where('B3_FILIAL', filial)
-    .where('B3_COD', produto)
+    .modify((query) => {
+      if (filial) {
+        query.where('B3_FILIAL', filial)
+      }
+      if (produto) {
+        query.where('B3_COD', produto)
+      }
+    })
     .where('D_E_L_E_T_', '')
 
   const average = await query

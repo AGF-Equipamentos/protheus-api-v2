@@ -18,7 +18,7 @@
 - [x] Purchase Orders
 - [ ] Price
 - [x] Register
-- [ ] Purchase Request Orders
+- [x] Request Purchase Orders
 
 ## Other
 
