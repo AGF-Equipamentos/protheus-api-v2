@@ -8,7 +8,7 @@ export async function requestPurchaseOrdersRoutes(request: FastifyRequest) {
     filial: z.string().optional(),
     produto: z.string().or(z.string().array()).optional(),
     sc: z.string().optional(),
-    aberto: z.coerce.boolean().optional().default(false)
+    aberto: z.string().optional().default('false')
   })
 
   const { filial, produto, sc, aberto } = getRegisterQueryParamsSchema.parse(
@@ -50,7 +50,7 @@ export async function requestPurchaseOrdersRoutes(request: FastifyRequest) {
       if (sc) {
         query.where('SC1.C1_NUM', sc)
       }
-      if (aberto) {
+      if (aberto === 'true') {
         query.where(knex.raw('SC1.C1_QUANT <> SC1.C1_QUJE'))
       }
     })

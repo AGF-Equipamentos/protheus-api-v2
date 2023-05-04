@@ -10,8 +10,8 @@ export async function purchaseOrdersRoutes(request: FastifyRequest) {
     produto: z.string().or(z.string().array()).optional(),
     grupo: z.string().optional(),
     top: z.coerce.number().optional(),
-    entregue: z.coerce.boolean().optional().default(false),
-    desc: z.coerce.boolean().optional().default(false),
+    entregue: z.string().optional().default('false'),
+    desc: z.string().optional().default('false'),
     cnpj: z.string().optional(),
     legenda: z.string().or(z.string().array()).optional()
   })
@@ -59,11 +59,11 @@ export async function purchaseOrdersRoutes(request: FastifyRequest) {
         query.limit(top)
       }
 
-      if (entregue) {
+      if (entregue === 'true') {
         query.where('C7_QUJE', '>', 0)
       }
 
-      if (desc) {
+      if (desc === 'true') {
         query.orderBy([
           { column: 'SC7.C7_DATPRF', order: 'desc' },
           { column: 'SC7.C7_NUM', order: 'desc' },
