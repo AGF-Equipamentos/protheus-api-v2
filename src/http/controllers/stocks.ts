@@ -15,19 +15,15 @@ export async function stocks(request: FastifyRequest, reply: FastifyReply) {
     request.query
   )
 
-  try {
-    const knexStocksRepository = new KnexStocksRepository()
-    const fetchStocksUseCase = new FetchStocksUseCase(knexStocksRepository)
+  const knexStocksRepository = new KnexStocksRepository()
+  const fetchStocksUseCase = new FetchStocksUseCase(knexStocksRepository)
 
-    const stocks = await fetchStocksUseCase.execute({
-      filial,
-      produto,
-      grupo,
-      armazem
-    })
+  const stocks = await fetchStocksUseCase.execute({
+    filial,
+    produto,
+    grupo,
+    armazem
+  })
 
-    return stocks
-  } catch (err) {
-    return reply.status(504).send()
-  }
+  return stocks
 }

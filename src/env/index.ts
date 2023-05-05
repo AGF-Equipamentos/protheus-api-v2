@@ -8,7 +8,8 @@ const envSchema = z.object({
   PROTHEUS_PASSWORD: z.string(),
   PROTHEUS_SERVER: z.string(),
   PROTHEUS_DATABASE: z.string(),
-  PROTHEUS_INSTANCE_NAME: z.string()
+  PROTHEUS_INSTANCE_NAME: z.string(),
+  SENTRY_DSN: z.string()
 })
 
 const _env = envSchema.safeParse(process.env)

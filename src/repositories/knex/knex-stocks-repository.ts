@@ -18,7 +18,7 @@ export class KnexStocksRepository implements StocksRepository {
   }: KnexStocksRepositorySelectInputs) {
     const query = knex
       .select('FILIAL', 'PRODUTO', 'DESCRICAO', 'SALDO', 'ARMAZEM')
-      .from(knex.raw('SALDO_ESTOQUE WITH (NOLOCK)'))
+      .frosm(knex.raw('SALDO_ESTOQUE WITH (NOLOCK)'))
       .where('SALDO', '>', 0)
       .orderBy('PRODUTO')
 
