@@ -1,8 +1,8 @@
 import { FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { knex } from '../../database/protheus'
+import { knex } from '../../lib/knex-protheus'
 
-export async function productionOrdersRoutes(request: FastifyRequest) {
+export async function productionOrders(request: FastifyRequest) {
   const getProductionOrdersQueryParamsSchema = z.object({
     filial: z.string().optional(),
     obs: z.string().optional(),

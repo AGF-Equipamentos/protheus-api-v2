@@ -1,8 +1,8 @@
 import { FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { knex } from '../../database/protheus'
+import { knex } from '../../lib/knex-protheus'
 
-export async function averageRoutes(request: FastifyRequest) {
+export async function average(request: FastifyRequest) {
   const getAverageQueryParamsSchema = z.object({
     filial: z.string().optional(),
     produto: z.string().optional()

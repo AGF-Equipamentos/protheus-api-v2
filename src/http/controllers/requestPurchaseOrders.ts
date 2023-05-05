@@ -1,9 +1,9 @@
 import { FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { knex } from '../../database/protheus'
-import { whereInGenerator } from '../../utils/whereInGenerator'
+import { knex } from '../../lib/knex-protheus'
+import { whereInGenerator } from '../../utils/knex/whereInGenerator'
 
-export async function requestPurchaseOrdersRoutes(request: FastifyRequest) {
+export async function requestPurchaseOrders(request: FastifyRequest) {
   const getRegisterQueryParamsSchema = z.object({
     filial: z.string().optional(),
     produto: z.string().or(z.string().array()).optional(),

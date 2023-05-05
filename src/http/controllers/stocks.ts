@@ -1,9 +1,9 @@
-import { FastifyRequest } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { knex } from '../../database/protheus'
-import { whereInGenerator } from '../../utils/whereInGenerator'
+import { KnexStocksRepository } from '../../repositories/knex/knex-stocks-repository'
+import { FetchStocksUseCase } from '../../use-cases/fetch-stocks'
 
-export async function stocksRoutes(request: FastifyRequest) {
+export async function stocks(request: FastifyRequest, reply: FastifyReply) {
   const getStocksQueryParamsSchema = z.object({
     filial: z.string().or(z.string().array()).optional(),
     produto: z.string().or(z.string().array()).optional(),
@@ -15,24 +15,19 @@ export async function stocksRoutes(request: FastifyRequest) {
     request.query
   )
 
-  const query = knex
-    .select('FILIAL', 'PRODUTO', 'DESCRICAO', 'SALDO', 'ARMAZEM')
-    .from(knex.raw('SALDO_ESTOQUE WITH (NOLOCK)'))
-    .where('SALDO', '>', 0)
-    .orderBy('PRODUTO')
+  try {
+    const knexStocksRepository = new KnexStocksRepository()
+    const fetchStocksUseCase = new FetchStocksUseCase(knexStocksRepository)
 
-  const modifyConditions = {
-    GRUPO: grupo,
-    FILIAL: filial,
-    PRODUTO: produto,
-    ARMAZEM: armazem
+    const stocks = await fetchStocksUseCase.execute({
+      filial,
+      produto,
+      grupo,
+      armazem
+    })
+
+    return stocks
+  } catch (err) {
+    return reply.status(504).send()
   }
-
-  for (const [column, value] of Object.entries(modifyConditions)) {
-    query.modify(whereInGenerator, { column, value })
-  }
-
-  const stocks = await query
-
-  return stocks
 }
